@@ -1,13 +1,9 @@
 import json
-import sys
 import os
 import logging
 
-# Añade el directorio connection_db al sys.path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'connection_db'))
-
 # Importa las funciones necesarias desde connection_db
-from connection_db.connection_db import connect_db, execute_query, close_connection
+from .connection_db import connect_db, execute_query, close_connection
 
 logging.basicConfig(level=logging.INFO)
 
