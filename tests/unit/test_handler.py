@@ -47,9 +47,9 @@ class TestApp(unittest.TestCase):
         'DB_PASSWORD': 'test_password',
         'DB_NAME': 'test_db'
     })
-    @patch('get_data_user.connect_db')
-    @patch('get_data_user.execute_query')
-    @patch('get_data_user.close_connection')
+    @patch('get_data_user.app.connect_db')
+    @patch('get_data_user.app.execute_query')
+    @patch('get_data_user.app.close_connection')
     def test_lambda_handler_no_results(self, mock_close_connection, mock_execute_query, mock_connect_db):
         # Simula una conexión exitosa pero sin resultados de consulta
         mock_connect_db.return_value = True
@@ -70,9 +70,9 @@ class TestApp(unittest.TestCase):
         'DB_PASSWORD': 'test_password',
         'DB_NAME': 'test_db'
     })
-    @patch('get_data_user.connect_db')
-    @patch('get_data_user.execute_query')
-    @patch('get_data_user.close_connection')
+    @patch('get_data_user.app.connect_db')
+    @patch('get_data_user.app.execute_query')
+    @patch('get_data_user.app.close_connection')
     def test_lambda_handler_query_error(self, mock_close_connection, mock_execute_query, mock_connect_db):
         # Simula una conexión exitosa pero un error en la ejecución de la consulta
         mock_connect_db.return_value = True
@@ -95,7 +95,7 @@ class TestApp(unittest.TestCase):
         'DB_PASSWORD': 'test_password',
         'DB_NAME': 'test_db'
     })
-    @patch('get_data_user.connect_db')
+    @patch('get_data_user.app.connect_db')
     def test_lambda_handler_connection_fail(self, mock_connect_db):
         # Simula un fallo en la conexión a la base de datos
         mock_connect_db.return_value = None  # Imita connect_db para devolver None indicando un fallo en la conexión

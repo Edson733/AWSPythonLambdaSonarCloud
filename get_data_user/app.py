@@ -3,7 +3,7 @@ import os
 import logging
 
 # Importa las funciones necesarias desde connection_db
-from connection_db import connect_db, execute_query, close_connection
+from get_data_user.connection_db import connect_db, execute_query, close_connection
 
 # Configura el nivel de logging a INFO
 logging.basicConfig(level=logging.INFO)
