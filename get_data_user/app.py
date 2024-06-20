@@ -2,7 +2,7 @@ import json
 import os
 import logging
 
-# Importa las funciones necesarias desde connection_db
+# Importa las funciones necesarias desde connection_db (para pruebas colocar el punto antes del archivo)
 from connection_db import connect_db, execute_query, close_connection
 
 # Configura el nivel de logging a INFO
@@ -11,23 +11,31 @@ logging.basicConfig(level=logging.INFO)
 
 # Definición de la función lambda_handler, la cual es el punto de entrada para la ejecución Lambda
 def lambda_handler(event, context):
-    # Obtiene las variables de entorno necesarias para la conexión a la base de datos
-    rds_host = os.environ['RDS_HOST']
-    rds_user = os.environ['DB_USERNAME']
-    rds_password = os.environ['DB_PASSWORD']
-    rds_db = os.environ['DB_NAME']
+    try:
+        # Obtiene las variables de entorno necesarias para la conexión a la base de datos
+        rds_host = os.environ['RDS_HOST']
+        rds_user = os.environ['DB_USERNAME']
+        rds_password = os.environ['DB_PASSWORD']
+        rds_db = os.environ['DB_NAME']
 
-    # Define la consulta SQL que se ejecutará
-    query = f"SELECT * FROM users;"
+        # Define la consulta SQL que se ejecutará
+        query = "SELECT * FROM users;"
 
-    # Establece la conexión a la base de datos usando las credenciales y parámetros obtenidos
-    connection = connect_db(rds_host, rds_user, rds_password, rds_db)
+        # Establece la conexión a la base de datos usando las credenciales y parámetros obtenidos
+        connection = connect_db(rds_host, rds_user, rds_password, rds_db)
 
-    # Inicializa una lista vacía para almacenar los usuarios
-    users = []
+        # Inicializa una lista vacía para almacenar los usuarios
+        users = []
 
-    # Verifica si la conexión fue exitosa
-    if connection:
+        if not connection:
+            # Loggea un error si la conexión a la base de datos falló
+            logging.error("Connection to the database failed.")
+            # Retorna un diccionario con el código de estado 500 y un mensaje de error
+            return {
+                "statusCode": 500,
+                "body": json.dumps({"error": "Failed to connect to the database."})
+            }
+
         try:
             # Ejecuta la consulta SQL
             results = execute_query(connection, query)
@@ -72,11 +80,17 @@ def lambda_handler(event, context):
         finally:
             # Cierra la conexión a la base de datos
             close_connection(connection)
-    else:
-        # Loggea un error si la conexión a la base de datos falló
-        logging.error("Connection to the database failed.")
-        # Retorna un diccionario con el código de estado 500 y un mensaje de error
+    except KeyError as e:
+        # Captura y loggea cualquier excepción ocurrida por variables de entorno faltantes
+        logging.error("Environment variable %s not set", e)
         return {
             "statusCode": 500,
-            "body": json.dumps({"error": "Failed to connect to the database."})
+            "body": json.dumps({"error": f"Environment variable {e} not set."})
+        }
+    except Exception as e:
+        # Captura y loggea cualquier otra excepción inesperada
+        logging.error("An unexpected error occurred: %s", e)
+        return {
+            "statusCode": 500,
+            "body": json.dumps({"error": "An unexpected error occurred."})
         }

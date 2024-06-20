@@ -24,10 +24,10 @@ class TestApp(unittest.TestCase):
         mock_execute_query.return_value = [  # Imita execute_query para devolver datos de usuario de ejemplo
             {
                 "id_usr": 1,
-                "name_usr": 'John',
-                "lastname_usr": 'Doe',
-                "email_usr": 'john.doe@example.com',
-                "phone_usr": '1234567890'
+                "name_usr": "John",
+                "lastname_usr": "Doe",
+                "email_usr": "john.doe@gmail.com",
+                "phone_usr": "1234567890"
             }
         ]
         event = {}  # Define un evento simulado para el manejador lambda
