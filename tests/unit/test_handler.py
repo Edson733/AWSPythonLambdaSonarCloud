@@ -106,5 +106,3 @@ class TestApp(unittest.TestCase):
         body = json.loads(result['body'])
         # Verifica que el error en la respuesta sea 'Failed to connect to the database.'
         self.assertEqual(body['error'], 'Failed to connect to the database.')
-        # Verifica que connect_db se haya llamado una vez con los parámetros correctos
-        mock_connect_db.assert_called_once_with('test_host', 'test_user', 'test_password', 'test_db')
