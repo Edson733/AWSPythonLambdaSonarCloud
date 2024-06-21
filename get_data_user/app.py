@@ -45,12 +45,19 @@ def lambda_handler(event, context):
                 # Itera sobre cada fila de resultados y los almacena en el diccionario `user`
                 for row in results:
                     user = {
-                        'id': row[0],  # row['id_usr'],
-                        'name': row[1],  # row['name_usr'],
-                        'lastname': row[2],  # row['lastname_usr'],
-                        'email': row[3],  # row['email_usr'],
-                        'phone': row[4]  # row['phone_usr']
+                        'id': row[0],
+                        'name': row[1],
+                        'lastname': row[2],
+                        'email': row[3],
+                        'phone': row[4]
                     }
+                    # user = {  # Para las pruebas
+                    #     'id': row['id_usr'],
+                    #     'name': row['name_usr'],
+                    #     'lastname': row['lastname_usr'],
+                    #     'email': row['email_usr'],
+                    #     'phone': row['phone_usr']
+                    # }
                     # Añade el diccionario `user` a la lista `users`
                     users.append(user)
                     # Loggea cada fila obtenida
