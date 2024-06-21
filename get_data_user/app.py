@@ -41,26 +41,26 @@ def lambda_handler(event, context):
             results = execute_query(connection, query)
             # Verifica si se obtuvieron resultados
             if results:
-                # logging.info("Results:")
-                # # Itera sobre cada fila de resultados y los almacena en el diccionario `user`
-                # for row in results:
-                #     user = {
-                #         'id': row['id_usr'],
-                #         'name': row['name_usr'],
-                #         'lastname': row['lastname_usr'],
-                #         'email': row['email_usr'],
-                #         'phone': row['phone_usr']
-                #     }
-                #     # Añade el diccionario `user` a la lista `users`
-                #     users.append(user)
-                #     # Loggea cada fila obtenida
-                #     logging.info(row)
+                logging.info("Results:")
+                # Itera sobre cada fila de resultados y los almacena en el diccionario `user`
+                for row in results:
+                    user = {
+                        'id': row[0],  # row['id_usr'],
+                        'name': row[1],  # row['name_usr'],
+                        'lastname': row[2],  # row['lastname_usr'],
+                        'email': row[3],  # row['email_usr'],
+                        'phone': row[4]  # row['phone_usr']
+                    }
+                    # Añade el diccionario `user` a la lista `users`
+                    users.append(user)
+                    # Loggea cada fila obtenida
+                    logging.info(row)
                 # Retorna un diccionario con el código de estado 200 y los datos de los usuarios en formato JSON
                 return {
                     "statusCode": 200,
                     "body": json.dumps({
                         "message": "Get Users",
-                        "data": results  # users
+                        "data": users
                     })
                 }
             else:
